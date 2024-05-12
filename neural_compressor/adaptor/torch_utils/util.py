@@ -77,10 +77,24 @@ def forward_wrapper(model, input):
     if isinstance(input, dict) or isinstance(input, UserDict):
         output = model(**input)
     elif isinstance(input, list) or isinstance(input, tuple):
-        try:
-            output = model(*input)
-        except:
-            output = model(input)
+        print(f"\n[TOP] input length: {len(input)}; type={type(input)}")
+        print(f"[UTILS] input0: {type(input[0])}, size={len(input[0])}; input1: {type(input[1])}")
+        if isinstance(input[1], dict):
+            print(f"[UTILS-d] input10 is {type(input[1]['fos'])}; input1_keys: {input[1].keys()}; ")
+        elif isinstance(input[1], np.ndarray):
+            print(f"[UTILS-d] input1 size={input[1].shape}")
+
+        if isinstance(input[0], list):
+            print(f"[UTILS-1] input0 size={len(input[0])}; input00: type={type(input[0][0])}; input01: type={type(input[0][1])}")
+            if isinstance(input[0][0], list):
+                print(f"[UTILS-2] input000: {type(input[0][0][0])}")
+
+        output = model(*input)
+
+        #try:
+        #    output = model(*input)
+        #except:
+        #    output = model(input)
     else:
         output = model(input)
     return output
